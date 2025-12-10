@@ -1,0 +1,75 @@
+# GraphSAGE Configuration for Large Graphs
+
+# Model configuration
+model:
+  name: "GraphSAGE"
+  in_channels: 1433
+  hidden_channels: [128, 64]
+  out_channels: 7
+  num_layers: 3
+  aggregator: "mean"
+  dropout: 0.3
+  use_batch_norm: true
+  use_residual: true
+  activation: "relu"
+
+# Training configuration
+training:
+  epochs: 300
+  lr: 0.005
+  weight_decay: 1e-4
+  optimizer: "adamw"
+  scheduler: "cosine"
+  scheduler_params:
+    step_size: 50
+    gamma: 0.5
+  early_stopping:
+    patience: 100
+    min_delta: 0.001
+  gradient_clipping: 1.0
+
+# Loss configuration
+loss:
+  type: "cross_entropy"
+  class_weights: null
+  label_smoothing: 0.1
+
+# Data configuration
+data:
+  dataset: "reddit"
+  root: "data"
+  normalize_features: true
+  random_split: false
+
+# Evaluation configuration
+evaluation:
+  metrics: ["accuracy", "f1_micro", "f1_macro", "auroc"]
+  save_predictions: true
+  save_embeddings: true
+  visualize_embeddings: true
+  plot_confusion_matrix: true
+  analyze_confidence: true
+
+# Logging configuration
+logging:
+  log_dir: "logs"
+  use_wandb: true
+  wandb_project: "graphsage-large-graphs"
+  use_tensorboard: true
+  log_interval: 10
+  save_checkpoints: true
+  checkpoint_dir: "checkpoints"
+
+# Device configuration
+device:
+  auto_detect: true
+  device: "auto"
+
+# Reproducibility
+seed: 42
+
+# Paths
+paths:
+  data_dir: "data"
+  output_dir: "outputs"
+  assets_dir: "assets"

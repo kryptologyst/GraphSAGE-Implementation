@@ -1,0 +1,80 @@
+# GraphSAGE Configuration for Synthetic Data
+
+# Model configuration
+model:
+  name: "GraphSAGE"
+  in_channels: 1433
+  hidden_channels: [64, 32]
+  out_channels: 7
+  num_layers: 2
+  aggregator: "mean"
+  dropout: 0.5
+  use_batch_norm: true
+  use_residual: false
+  activation: "relu"
+
+# Training configuration
+training:
+  epochs: 100
+  lr: 0.01
+  weight_decay: 5e-4
+  optimizer: "adam"
+  scheduler: "step"
+  scheduler_params:
+    step_size: 30
+    gamma: 0.5
+  early_stopping:
+    patience: 30
+    min_delta: 0.001
+  gradient_clipping: 1.0
+
+# Loss configuration
+loss:
+  type: "cross_entropy"
+  class_weights: null
+  label_smoothing: 0.0
+
+# Data configuration
+data:
+  dataset: "synthetic"
+  root: "data"
+  normalize_features: true
+  random_split: false
+  synthetic:
+    num_nodes: 1000
+    num_classes: 7
+    num_features: 1433
+    edge_prob: 0.1
+
+# Evaluation configuration
+evaluation:
+  metrics: ["accuracy", "f1_micro", "f1_macro", "auroc"]
+  save_predictions: false
+  save_embeddings: false
+  visualize_embeddings: true
+  plot_confusion_matrix: true
+  analyze_confidence: true
+
+# Logging configuration
+logging:
+  log_dir: "logs"
+  use_wandb: false
+  wandb_project: "graphsage-synthetic"
+  use_tensorboard: true
+  log_interval: 20
+  save_checkpoints: true
+  checkpoint_dir: "checkpoints"
+
+# Device configuration
+device:
+  auto_detect: true
+  device: "auto"
+
+# Reproducibility
+seed: 42
+
+# Paths
+paths:
+  data_dir: "data"
+  output_dir: "outputs"
+  assets_dir: "assets"
